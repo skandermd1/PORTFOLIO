@@ -8,16 +8,60 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    /* Critical CSS fallbacks */
-    body { 
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: #e8eaef;
-      background: #0a0b0d;
+    /* Critical CSS - MUST be visible even if external CSS fails */
+    * { 
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    /* Ensure text is visible even if CSS doesn't load */
-    h1, h2, h3, p, span, a { color: inherit; }
-    .section-title { color: #e8eaef !important; }
-    .hero-title .accent { color: #00d4aa !important; }
+    html, body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #e8eaef !important;
+      background: #0a0b0d !important;
+      line-height: 1.6;
+    }
+    /* Force all text to be visible */
+    h1, h2, h3, h4, h5, h6, p, span, a, li, div, section, article {
+      color: #e8eaef !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    .section-title, h2.section-title {
+      color: #e8eaef !important;
+      font-size: clamp(2rem, 5vw, 3rem) !important;
+      font-weight: 700 !important;
+      margin: 0 0 3rem !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    .hero-title, h1.hero-title {
+      color: #e8eaef !important;
+      font-size: clamp(2.5rem, 8vw, 4.5rem) !important;
+      font-weight: 700 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    .hero-title .accent, h1 .accent {
+      color: #00d4aa !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    .hero-tagline, p.hero-tagline {
+      color: #8b8f9a !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    [data-animate] {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+    nav, .nav {
+      background: rgba(10, 11, 13, 0.95) !important;
+    }
+    nav a, .nav a {
+      color: #8b8f9a !important;
+    }
   </style>
   <link rel="stylesheet" href="portfolio/styles.css" />
   <noscript>
@@ -205,25 +249,46 @@ Built with Gradio, LlamaIndex, and IBM Watsonx (embeddings + LLM).</p>
 
   <script src="portfolio/script.js"></script>
   <script>
-    // Verify CSS loaded
+    // Force visibility on load
     (function() {
-      var testEl = document.createElement('div');
-      testEl.className = 'test-css-load';
-      testEl.style.display = 'none';
-      document.body.appendChild(testEl);
-      var styles = window.getComputedStyle(testEl);
-      setTimeout(function() {
-        var cssLoaded = styles.getPropertyValue('--bg') !== '';
-        if (!cssLoaded) {
-          console.warn('CSS may not have loaded correctly');
-          // Force show all animated elements
-          document.querySelectorAll('[data-animate]').forEach(function(el) {
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-          });
-        }
-        document.body.removeChild(testEl);
-      }, 100);
+      // Immediately show all text
+      document.addEventListener('DOMContentLoaded', function() {
+        var allText = document.querySelectorAll('h1, h2, h3, p, span, a, li, div');
+        allText.forEach(function(el) {
+          el.style.color = '#e8eaef';
+          el.style.visibility = 'visible';
+          el.style.opacity = '1';
+        });
+        
+        // Force show animated elements
+        document.querySelectorAll('[data-animate]').forEach(function(el) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          el.style.visibility = 'visible';
+        });
+        
+        // Check if CSS loaded
+        setTimeout(function() {
+          var testEl = document.createElement('div');
+          testEl.className = 'test-css-load';
+          testEl.style.display = 'none';
+          document.body.appendChild(testEl);
+          var styles = window.getComputedStyle(testEl);
+          var cssLoaded = styles.getPropertyValue('--bg') !== '';
+          
+          if (!cssLoaded) {
+            console.warn('External CSS not loaded - using fallback styles');
+            // Apply additional fallback styles
+            document.body.style.fontFamily = 'system-ui, sans-serif';
+            document.body.style.color = '#e8eaef';
+            document.body.style.background = '#0a0b0d';
+          }
+          
+          if (testEl.parentNode) {
+            document.body.removeChild(testEl);
+          }
+        }, 500);
+      });
     })();
   </script>
 </body>
