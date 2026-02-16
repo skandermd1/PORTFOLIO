@@ -63,7 +63,7 @@
       color: #8b8f9a !important;
     }
   </style>
-  <link rel="stylesheet" href="portfolio/styles.css" />
+  <link rel="stylesheet" href="portfolio/styles.css" id="main-css" />
   <noscript>
     <style>
       [data-animate] { opacity: 1 !important; transform: none !important; }
@@ -100,7 +100,7 @@
       </div>
       <div class="hero-content">
         <div class="hero-photo-wrap">
-          <img src="portfolio/assets/img.png" alt="Developer portrait" class="hero-photo" />
+          <img src="./portfolio/assets/img.png" alt="Developer portrait" class="hero-photo" />
           <div class="hero-photo-ring"></div>
         </div>
         <h1 class="hero-title">
@@ -193,7 +193,7 @@
         <div class="projects-list">
           <article class="project-card" data-animate>
             <div class="project-image-wrap">
-              <img src="portfolio/assets/yt.png" alt="AI Chatbot" class="project-image" />
+              <img src="./portfolio/assets/yt.png" alt="AI Chatbot" class="project-image" />
               <div class="project-overlay"></div>
             </div>
             <div class="project-info">
@@ -203,7 +203,7 @@
           </article>
           <article class="project-card" data-animate>
             <div class="project-image-wrap">
-              <img src="portfolio/assets/ib.png" alt="Dashboard" class="project-image" />
+              <img src="./portfolio/assets/ib.png" alt="Dashboard" class="project-image" />
               <div class="project-overlay"></div>
             </div>
             <div class="project-info">
@@ -214,7 +214,7 @@ Built with Gradio, LlamaIndex, and IBM Watsonx (embeddings + LLM).</p>
           </article>
           <article class="project-card" data-animate>
             <div class="project-image-wrap">
-              <img src="portfolio/assets/ma.png.png" alt="API Platform" class="project-image" />
+              <img src="./portfolio/assets/ma.png.png" alt="API Platform" class="project-image" />
               <div class="project-overlay"></div>
             </div>
             <div class="project-info">
@@ -232,7 +232,7 @@ Built with Gradio, LlamaIndex, and IBM Watsonx (embeddings + LLM).</p>
         <h2 class="section-title" data-animate>Get in touch</h2>
         <div class="contact-content" data-animate>
           <div class="contact-photo-wrap">
-            <img src="portfolio/assets/img.png" alt="Developer" class="contact-photo" />
+            <img src="./portfolio/assets/img.png" alt="Developer" class="contact-photo" />
           </div>
           <div class="contact-links">
             <a href="https://github.com/skandermd1" target="_blank" rel="noopener" class="contact-link">GitHub</a>
@@ -247,6 +247,57 @@ Built with Gradio, LlamaIndex, and IBM Watsonx (embeddings + LLM).</p>
     <p>© <span id="year"></span> AI & Web Developer. Built with care.</p>
   </footer>
 
+  <script>
+    // Diagnostic and path fix for GitHub Pages
+    (function() {
+      console.log('Current URL:', window.location.href);
+      console.log('Pathname:', window.location.pathname);
+      
+      var pathParts = window.location.pathname.split('/').filter(Boolean);
+      var repoName = pathParts[0] || '';
+      console.log('Detected repo name:', repoName || '(user site)');
+      
+      // Check if CSS loaded after 1 second
+      setTimeout(function() {
+        var cssLoaded = false;
+        for (var i = 0; i < document.styleSheets.length; i++) {
+          try {
+            if (document.styleSheets[i].href && document.styleSheets[i].href.includes('styles.css')) {
+              cssLoaded = true;
+              console.log('✓ CSS loaded from:', document.styleSheets[i].href);
+              break;
+          }
+          } catch(e) {}
+        }
+        
+        if (!cssLoaded) {
+          console.warn('⚠ CSS not loaded. Trying alternative paths...');
+          var paths = repoName 
+            ? ['/' + repoName + '/portfolio/styles.css', 'portfolio/styles.css']
+            : ['portfolio/styles.css', '/portfolio/styles.css'];
+          
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          var tryPath = function(i) {
+            if (i >= paths.length) {
+              console.error('❌ CSS not found. Text should still be visible via inline styles.');
+              return;
+            }
+            link.href = paths[i];
+            link.onload = function() {
+              console.log('✓ CSS loaded from:', paths[i]);
+            };
+            link.onerror = function() {
+              console.log('✗ Failed:', paths[i]);
+              tryPath(i + 1);
+            };
+            document.head.appendChild(link);
+          };
+          tryPath(0);
+        }
+      }, 1000);
+    })();
+  </script>
   <script src="portfolio/script.js"></script>
   <script>
     // Force visibility on load
