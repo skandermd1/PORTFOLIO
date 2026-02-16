@@ -29,6 +29,18 @@ body {
   overflow-x: hidden;
 }
 
+/* Fallback for browsers that don't support background-clip */
+@supports not (-webkit-background-clip: text) {
+  .section-title {
+    color: var(--text);
+    background: none;
+  }
+  .hero-title .accent {
+    color: var(--accent);
+    background: none;
+  }
+}
+
 /* Noise overlay */
 .noise-overlay {
   position: fixed;
@@ -165,6 +177,7 @@ body {
   font-weight: 700;
   margin: 0 0 3rem;
   letter-spacing: -0.02em;
+  color: var(--text);
   background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -309,6 +322,7 @@ body {
 }
 
 .hero-title .accent {
+  color: var(--accent);
   background: linear-gradient(135deg, var(--accent), var(--purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
