@@ -29,6 +29,15 @@ body {
   overflow-x: hidden;
 }
 
+/* Image quality optimization */
+img {
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 100%;
+  height: auto;
+}
+
 /* Fallback for browsers that don't support background-clip */
 @supports not (-webkit-background-clip: text) {
   .section-title {
@@ -270,6 +279,9 @@ body {
   border: 3px solid var(--surface-2);
   box-shadow: 0 0 0 1px var(--border), 0 24px 48px rgba(0, 0, 0, 0.4);
   animation: photoReveal 1s ease-out;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .hero-photo {
@@ -278,6 +290,15 @@ body {
   display: block;
   object-fit: cover;
   object-position: center top;
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+  -webkit-transform: translateZ(0) scale(1);
+  transform: translateZ(0) scale(1);
 }
 
 .hero-photo-ring {
@@ -415,6 +436,11 @@ body {
   border-radius: 16px;
   border: 1px solid var(--border);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .about-photo-1 { transform: rotate(-3deg); }
@@ -600,6 +626,11 @@ body {
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .project-card:hover .project-image {
@@ -664,6 +695,11 @@ body {
   display: block;
   object-fit: cover;
   object-position: center top;
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0) scale(1);
+  transform: translateZ(0) scale(1);
 }
 
 .contact-links {
