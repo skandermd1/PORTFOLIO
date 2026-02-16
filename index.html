@@ -62,25 +62,40 @@
     nav a, .nav a {
       color: #8b8f9a !important;
     }
-    /* Force remove all blur and grain effects */
-    * {
+    /* AGGRESSIVE: Force remove ALL blur and grain effects */
+    *, *::before, *::after {
       filter: none !important;
       backdrop-filter: none !important;
       -webkit-font-smoothing: auto !important;
       -moz-osx-font-smoothing: auto !important;
+      text-rendering: optimizeLegibility !important;
     }
-    .noise-overlay {
+    .noise-overlay, [class*="noise"], [id*="noise"] {
       display: none !important;
       opacity: 0 !important;
       visibility: hidden !important;
+      pointer-events: none !important;
+      position: absolute !important;
+      left: -9999px !important;
     }
-    img {
+    img, picture, video {
       image-rendering: auto !important;
+      image-rendering: crisp-edges !important;
       -webkit-font-smoothing: auto !important;
+      filter: none !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+      will-change: auto !important;
+    }
+    .gradient-orb, .orb-1, .orb-2 {
+      filter: none !important;
+    }
+    .nav {
+      backdrop-filter: none !important;
       filter: none !important;
     }
   </style>
-  <link rel="stylesheet" href="portfolio/styles.css?v=2" id="main-css" />
+  <link rel="stylesheet" href="portfolio/styles.css?v=4" id="main-css" />
   <noscript>
     <style>
       [data-animate] { opacity: 1 !important; transform: none !important; }
@@ -88,8 +103,6 @@
   </noscript>
 </head>
 <body>
-  <!-- Noise overlay disabled for clarity -->
-  <!-- <div class="noise-overlay" aria-hidden="true"></div> -->
 
   <!-- Cursor glow (optional) -->
   <div class="cursor-glow" id="cursorGlow"></div>
@@ -316,7 +329,60 @@ Built with Gradio, LlamaIndex, and IBM Watsonx (embeddings + LLM).</p>
       }, 1000);
     })();
   </script>
-  <script src="portfolio/script.js?v=2"></script>
+  <script src="portfolio/script.js?v=3"></script>
+  <script>
+    // AGGRESSIVE: Remove ALL blur and noise effects
+    (function() {
+      // Remove noise overlay immediately
+      function removeNoise() {
+        var noise = document.querySelector('.noise-overlay');
+        if (noise) {
+          noise.remove();
+          console.log('Noise overlay removed');
+        }
+        // Remove any elements with noise in class/id
+        document.querySelectorAll('[class*="noise"], [id*="noise"]').forEach(function(el) {
+          el.remove();
+        });
+      }
+      removeNoise();
+      
+      // Remove filters from all elements
+      function removeFilters() {
+        var all = document.querySelectorAll('*');
+        for (var i = 0; i < all.length; i++) {
+          var el = all[i];
+          if (el.style) {
+            if (el.style.filter && el.style.filter !== 'none') {
+              el.style.filter = 'none';
+            }
+            if (el.style.backdropFilter) {
+              el.style.backdropFilter = 'none';
+            }
+          }
+        }
+        // Force images to be crisp
+        var imgs = document.querySelectorAll('img');
+        for (var j = 0; j < imgs.length; j++) {
+          imgs[j].style.imageRendering = 'auto';
+          imgs[j].style.filter = 'none';
+        }
+      }
+      
+      // Run immediately and after load
+      removeFilters();
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          removeNoise();
+          removeFilters();
+        });
+      }
+      window.addEventListener('load', function() {
+        removeNoise();
+        removeFilters();
+      });
+    })();
+  </script>
   <script>
     // Force visibility on load
     (function() {

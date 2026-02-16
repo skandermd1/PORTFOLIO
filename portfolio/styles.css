@@ -52,15 +52,17 @@ img {
   }
 }
 
-/* Noise overlay - DISABLED for clarity */
+/* Noise overlay - COMPLETELY REMOVED */
 .noise-overlay {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
+  position: absolute !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+  z-index: -9999 !important;
 }
 
 /* Cursor glow */
@@ -89,8 +91,8 @@ img {
   justify-content: space-between;
   padding: 0 2rem;
   z-index: 100;
-  background: rgba(10, 11, 13, 0.8);
-  backdrop-filter: blur(12px);
+  background: rgba(10, 11, 13, 0.95);
+  backdrop-filter: none;
   border-bottom: 1px solid var(--border);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -226,7 +228,7 @@ img {
 .gradient-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: none;
   opacity: 0.5;
   animation: orbFloat 12s ease-in-out infinite;
 }
