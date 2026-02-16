@@ -32,10 +32,12 @@ body {
 /* Image quality optimization */
 img {
   image-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
   max-width: 100%;
   height: auto;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* Fallback for browsers that don't support background-clip */
@@ -50,15 +52,15 @@ img {
   }
 }
 
-/* Noise overlay - very subtle texture, can be disabled */
+/* Noise overlay - DISABLED for clarity */
 .noise-overlay {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.005;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.3' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  /* To completely disable noise, set opacity to 0 or display: none */
 }
 
 /* Cursor glow */
@@ -292,9 +294,8 @@ img {
   object-fit: cover;
   object-position: center top;
   image-rendering: auto;
-  image-rendering: -webkit-optimize-contrast;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: transform;

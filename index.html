@@ -62,8 +62,25 @@
     nav a, .nav a {
       color: #8b8f9a !important;
     }
+    /* Force remove all blur and grain effects */
+    * {
+      filter: none !important;
+      backdrop-filter: none !important;
+      -webkit-font-smoothing: auto !important;
+      -moz-osx-font-smoothing: auto !important;
+    }
+    .noise-overlay {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+    img {
+      image-rendering: auto !important;
+      -webkit-font-smoothing: auto !important;
+      filter: none !important;
+    }
   </style>
-  <link rel="stylesheet" href="portfolio/styles.css" id="main-css" />
+  <link rel="stylesheet" href="portfolio/styles.css?v=2" id="main-css" />
   <noscript>
     <style>
       [data-animate] { opacity: 1 !important; transform: none !important; }
@@ -71,8 +88,8 @@
   </noscript>
 </head>
 <body>
-  <!-- Noise overlay - set opacity to 0 in CSS to disable completely -->
-  <div class="noise-overlay" aria-hidden="true" style="opacity: 0;"></div>
+  <!-- Noise overlay disabled for clarity -->
+  <!-- <div class="noise-overlay" aria-hidden="true"></div> -->
 
   <!-- Cursor glow (optional) -->
   <div class="cursor-glow" id="cursorGlow"></div>
@@ -299,7 +316,7 @@ Built with Gradio, LlamaIndex, and IBM Watsonx (embeddings + LLM).</p>
       }, 1000);
     })();
   </script>
-  <script src="portfolio/script.js"></script>
+  <script src="portfolio/script.js?v=2"></script>
   <script>
     // Force visibility on load
     (function() {
