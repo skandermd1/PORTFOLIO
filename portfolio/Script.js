@@ -1,57 +1,43 @@
 (function () {
   "use strict";
 
-  // ----- Year in footer -----
+  // Year
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ----- Nav scroll hide/show -----
+  // Nav scroll
   var nav = document.getElementById("nav");
   var lastScroll = 0;
-  var navHeight = 72;
-
-  function onScroll() {
-    var y = window.scrollY || window.pageYOffset;
-    if (y > navHeight) nav.classList.add("scrolled"); else nav.classList.remove("scrolled");
-    if (y > lastScroll && y > 200) nav.classList.add("hidden");
-    else nav.classList.remove("hidden");
+  window.addEventListener("scroll", function () {
+    var y = window.scrollY;
+    nav.classList.toggle("scrolled", y > 20);
+    nav.classList.toggle("hidden", y > lastScroll && y > 200);
     lastScroll = y;
-  }
+  }, { passive: true });
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  // ----- Mobile nav toggle -----
+  // Mobile nav
   var navToggle = document.getElementById("navToggle");
-  if (navToggle && nav) {
+  if (navToggle) {
     navToggle.addEventListener("click", function () {
       nav.classList.toggle("open");
-      document.body.style.overflow = nav.classList.contains("open") ? "hidden" : "";
     });
-    nav.querySelectorAll(".nav-links a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        nav.classList.remove("open");
-        document.body.style.overflow = "";
-      });
+    nav.querySelectorAll(".nav-links a").forEach(function (a) {
+      a.addEventListener("click", function () { nav.classList.remove("open"); });
     });
   }
 
-  // ----- Cursor glow (desktop only) -----
-  var cursorGlow = document.getElementById("cursorGlow");
-  if (cursorGlow && window.matchMedia("(pointer: fine)").matches) {
-    document.body.addEventListener("mousemove", function (e) {
-      cursorGlow.style.left = e.clientX + "px";
-      cursorGlow.style.top = e.clientY + "px";
-      cursorGlow.style.opacity = "1";
+  // Cursor glow
+  var glow = document.getElementById("cursorGlow");
+  if (glow && window.matchMedia("(pointer: fine)").matches) {
+    document.addEventListener("mousemove", function (e) {
+      glow.style.left = e.clientX + "px";
+      glow.style.top = e.clientY + "px";
+      glow.style.opacity = "1";
     });
-    document.body.addEventListener("mouseleave", function () {
-      cursorGlow.style.opacity = "0";
-    });
+    document.addEventListener("mouseleave", function () { glow.style.opacity = "0"; });
   }
 
-  // ----- Scroll-triggered animations -----
-  var animated = document.querySelectorAll("[data-animate]");
-  var observerOptions = { root: null, rootMargin: "0px 0px -80px 0px", threshold: 0.1 };
-
+  // Scroll animations
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -59,26 +45,32 @@
         observer.unobserve(entry.target);
       }
     });
-  }, observerOptions);
+  }, { rootMargin: "0px 0px -60px 0px", threshold: 0.1 });
 
-  animated.forEach(function (el) {
+  document.querySelectorAll("[data-animate]").forEach(function (el, i) {
+    el.style.transitionDelay = (i % 6 * 0.07) + "s";
     observer.observe(el);
   });
 
-  // ----- Stagger children (e.g. cert cards, lang cards) -----
-  var staggerContainers = document.querySelectorAll(".certs-grid, .lang-cards, .projects-list");
-  staggerContainers.forEach(function (container) {
-    var children = container.querySelectorAll("[data-animate]");
-    children.forEach(function (child, i) {
-      child.style.transitionDelay = (i * 0.08) + "s";
+  // Project tabs filter
+  var tabBtns = document.querySelectorAll(".tab-btn");
+  var projectCards = document.querySelectorAll(".project-card");
+
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      tabBtns.forEach(function (b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      var tab = btn.getAttribute("data-tab");
+      projectCards.forEach(function (card) {
+        var cat = card.getAttribute("data-category");
+        card.classList.toggle("hidden", tab !== "all" && cat !== tab);
+      });
     });
   });
 
-  // ----- Smooth scroll for anchor links -----
+  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    var id = a.getAttribute("href");
-    if (id === "#") return;
-    var target = document.querySelector(id);
+    var target = document.querySelector(a.getAttribute("href"));
     if (target) {
       a.addEventListener("click", function (e) {
         e.preventDefault();
@@ -86,4 +78,5 @@
       });
     }
   });
+
 })();
