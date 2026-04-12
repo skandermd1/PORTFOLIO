@@ -38,6 +38,7 @@
   }
 
   // Scroll animations
+  document.body.classList.add("js-ready");
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
